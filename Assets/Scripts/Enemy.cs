@@ -48,7 +48,7 @@ namespace UDEV.PlatfromGame
             if (stat != null)
             {
                 m_curStat = (EnemyStat)stat;
-                Debug.Log("m_curStat has been initialized: " + m_curStat);
+                // Debug.Log("m_curStat has been initialized: " + m_curStat);
             }
         }
         protected virtual void Update()
@@ -89,6 +89,7 @@ namespace UDEV.PlatfromGame
             base.Dead();
             m_fsm.ChangeState(EnemyAnimState.Dead);
         }
+        // Lấy ra hướng mục tiêu (Player)
         protected void GetTargetDir()
         {
             // vị trí vủa mục tiêu - vị trí của enemy

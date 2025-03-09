@@ -63,7 +63,7 @@ namespace UDEV.PlatfromGame
         Idle,
         LadderIdle,
         HammerAttack,
-        GoHit
+        GotHit
     }
     public enum EnemyAnimState
     {

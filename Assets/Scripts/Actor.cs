@@ -122,28 +122,28 @@ namespace UDEV.PlatfromGame
         {
             // ko xác định được đối tượng nào đánh (or va chạm bị chướng ngại vật)
             // Nếu m_whoHit == null ko nhận xác thương từ nhân vật khác, nhận sát thương từ chướng ngại vật trên đường
-            // if(m_whoHit == null)
-            // {
-            //     m_vertDir = m_vertDir == 0 ? 1 : m_vertDir;// chỉ xét trường hợp hướng m_vertDir == 0 thôi
-            //     // thay đổi lại vận tốc
-            //     m_rb.velocity = new Vector2(m_hozDir * -stat.knockBackForce, (m_vertDir * 0.55f) * stat.knockBackForce);
-            // }
-            // // trúng đòn từ nhân vật khác
-            // else
-            // {
-            //     // hướng = vị trí nhân vật gây sát thương - vị trí nhân vật nhận sát thương
-            //     Vector2 dir = m_whoHit.transform.position - transform.position;
-            //     dir.Normalize();
-            //     if(dir.x > 0)
-            //     {
-            //         // đẩy nhân vật nhận sát thương sang tay trái
-            //         m_rb.velocity = new Vector2(-stat.knockBackForce, yRate * stat.knockBackForce);
-            //     }else if(dir.x < 0)
-            //     {
-            //         // đẩy nhân vật nhận sát thương sang tay phải
-            //         m_rb.velocity = new Vector2(stat.knockBackForce, yRate * stat.knockBackForce);
-            //     }
-            // }
+            if(m_whoHit == null)
+            {
+                m_vertDir = m_vertDir == 0 ? 1 : m_vertDir;// chỉ xét trường hợp hướng m_vertDir == 0 thôi
+                // thay đổi lại vận tốc
+                m_rb.velocity = new Vector2(m_hozDir * -stat.knockBackForce, (m_vertDir * 0.55f) * stat.knockBackForce);
+            }
+            // trúng đòn từ nhân vật khác
+            else
+            {
+                // hướng = vị trí nhân vật gây sát thương - vị trí nhân vật nhận sát thương
+                Vector2 dir = m_whoHit.transform.position - transform.position;
+                dir.Normalize();
+                if(dir.x > 0)
+                {
+                    // đẩy nhân vật nhận sát thương sang tay trái
+                    m_rb.velocity = new Vector2(-stat.knockBackForce, yRate * stat.knockBackForce);
+                }else if(dir.x < 0)
+                {
+                    // đẩy nhân vật nhận sát thương sang tay phải
+                    m_rb.velocity = new Vector2(stat.knockBackForce, yRate * stat.knockBackForce);
+                }
+            }
         }
         protected void Flip(Direction moveDir)
         {

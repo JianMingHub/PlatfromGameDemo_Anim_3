@@ -221,6 +221,19 @@ namespace UDEV.PlatfromGame
                 ChangeState(PlayerAnimState.FireBullet);
             }
         }
+        public override void TakeDamage(int dmg, Actor whoHit = null)
+        {
+            if (IsDead) return;
+            base.TakeDamage(dmg, whoHit);
+            // GameData.Ins.hp = m_curHp;
+            // GameData.Ins.SaveData();
+            // Nếu máu hiện tại lớn hơn 0 và ko đang ở trạng thái bất bại
+            if (m_curHp > 0 && !m_isInvincible)
+            {
+                ChangeState(PlayerAnimState.GotHit);
+            }
+            // GUIManager.Ins.UpdateHp(m_curHp);
+        }
         public void ChangeState(PlayerAnimState state)
         {
             m_prevState = m_fsm.State;
@@ -254,7 +267,18 @@ namespace UDEV.PlatfromGame
             if (inWaterCol)
                 inWaterCol.enabled = collider == PlayerCollider.InWater;
         }
-        
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if (col.gameObject.CompareTag(GameTag.Enemy.ToString()))
+            {
+                Enemy enemy = col.gameObject.GetComponent<Enemy>();
+
+                if (enemy)
+                {
+                    TakeDamage(enemy.stat.damage, enemy);
+                }
+            }
+        }
         #region FSM
             private void SayHello_Enter() { } 
             private void SayHello_Update() { 
@@ -452,6 +476,32 @@ namespace UDEV.PlatfromGame
                 Helper.PlayAnim(m_anim, PlayerAnimState.HammerAttack.ToString()); 
             } 
             private void HammerAttack_Exit() { } 
+            private void GotHit_Enter() { 
+                // AudioController.ins.PlaySound(AudioController.ins.getHit);
+            } 
+            private void GotHit_Update() { 
+                if (m_isKnockBack)
+                {
+                    KnockBackMove(0.25f);
+                } 
+                else if (obstacleChker.IsOnDeepWater)
+                {
+                    if (obstacleChker.IsOnDeepWater)
+                    {
+                        ChangeState(PlayerAnimState.SwimOnDeep);
+                    }
+                    else
+                    {
+                        ChangeState(PlayerAnimState.Swim);
+                    }
+                } 
+                else 
+                {
+                    ChangeState(PlayerAnimState.Idle);
+                }
+                // GUIManager.Ins.UpdateHp(m_curHp);
+            } 
+            private void GotHit_Exit() { } 
         #endregion FSM
     }
 }
